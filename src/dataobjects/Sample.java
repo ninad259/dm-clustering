@@ -2,8 +2,13 @@ package dataobjects;
 public class Sample {
 	private int sampleId;
 	private int groundTruthClusterId;
-	private int[] features;
+	private float[] features;
 	private int calculatedClusterId;
+	public Sample(int sampleId, int groundTruthClusterId, float[] features){
+		this.sampleId = sampleId;
+		this.groundTruthClusterId = groundTruthClusterId;
+		this.features = features;
+	}
 	public int getSampleId() {
 		return sampleId;
 	}
@@ -16,10 +21,10 @@ public class Sample {
 	public void setGroundTruthClusterId(int groundTruthClusterId) {
 		this.groundTruthClusterId = groundTruthClusterId;
 	}
-	public int[] getFeatures() {
+	public float[] getFeatures() {
 		return features;
 	}
-	public void setFeatures(int[] features) {
+	public void setFeatures(float[] features) {
 		this.features = features;
 	}
 	public int getCalculatedClusterId() {
@@ -29,9 +34,5 @@ public class Sample {
 		this.calculatedClusterId = calculatedClusterId;
 	}
 	
-	public Sample(int sampleId, int groundTruthClusterId, int[] features){
-		this.sampleId = sampleId;
-		this.groundTruthClusterId = groundTruthClusterId;
-		this.features = features;
-	}
+	
 }
