@@ -8,6 +8,7 @@ public class Sample {
 		this.sampleId = sampleId;
 		this.groundTruthClusterId = groundTruthClusterId;
 		this.features = features;
+		this.calculatedClusterId = 0;
 	}
 	public int getSampleId() {
 		return sampleId;
