@@ -2,10 +2,8 @@ package clustering.driver;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Properties;
 import java.util.Scanner;
 
-import utils.ConfigUtils;
 import utils.FileUtils;
 import dataobjects.Sample;
 
