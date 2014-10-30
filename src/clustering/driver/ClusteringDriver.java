@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Properties;
 import java.util.Scanner;
 
+import clustering.hierarchical.HierarchicalClustering;
 import utils.ConfigUtils;
 import utils.FileUtils;
 import dataobjects.Sample;
@@ -33,6 +34,10 @@ public class ClusteringDriver {
 				samples.add(new Sample(Integer.parseInt(tokens[0]), Integer.parseInt(tokens[1]),features));
 			}
 			scanner.close();
+			
+			HierarchicalClustering HC = new HierarchicalClustering();
+			HC.clustering(samples);
+			
 		} catch (FileNotFoundException e) {
 			System.err.println(e.toString());;
 		}

@@ -33,6 +33,13 @@ public class Sample {
 	public void setCalculatedClusterId(int calculatedClusterId) {
 		this.calculatedClusterId = calculatedClusterId;
 	}
-	
-	
+	public float getEuclideanDistance(Sample sample){
+		float euclideanDistance = 0;
+		for(int i = 0; i<sample.getFeatures().length; i++){
+			euclideanDistance+= Math.pow(Math.abs(this.features[i]-sample.getFeatures()[i]), 2);
+		}
+		euclideanDistance = (float) Math.sqrt(euclideanDistance);
+		return euclideanDistance;
+	}
+
 }
