@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+import clustering.hierarchical.HierarchicalClustering;
 import utils.FileUtils;
 import dataobjects.Sample;
 
@@ -15,7 +16,7 @@ public class ClusteringDriver {
 		
 		try {
 			ArrayList<Sample> samples = new ArrayList<Sample>();
-			Scanner scanner = file.readFileUsingScanner("/cho.txt");
+			Scanner scanner = file.readFileUsingScanner("/iyer.txt");
 			while(scanner.hasNextLine()){
 				String line = scanner.nextLine();
 				String[] tokens = line.split("\\s");
@@ -31,6 +32,11 @@ public class ClusteringDriver {
 				samples.add(new Sample(Integer.parseInt(tokens[0]), Integer.parseInt(tokens[1]),features));
 			}
 			scanner.close();
+
+			HierarchicalClustering HC = new HierarchicalClustering();
+			HC.clustering(samples);
+			
+			
 		} catch (FileNotFoundException e) {
 			System.err.println(e.toString());;
 		}
