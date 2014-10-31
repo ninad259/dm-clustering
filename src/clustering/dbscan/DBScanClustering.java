@@ -60,20 +60,24 @@ public class DBScanClustering implements Clustering{
 		int clusterCount = 1;
 		ArrayList<DBScanSample> neighborPts;
 		for(DBScanSample point : dbSamples){
-			point.setVisited(true);
-			neighborPts = regionQuery(point, dbSamples);
-			if(neighborPts.size()<this.minPoints){
-				noise.add(point);
-				point.setCalculatedClusterId(-1);
-			}else {
-				Cluster cluster = new Cluster();
-				cluster.setClusterId(clusterCount++);
-				clusters.add(cluster);
-				expandCluster(point, neighborPts, cluster, dbSamples);
+			if(!point.isVisited()){
+				point.setVisited(true);
+				neighborPts = regionQuery(point, dbSamples);
+				if(neighborPts.size()<this.minPoints){
+					noise.add(point);
+					point.setCalculatedClusterId(-1);
+				}else {
+					Cluster cluster = new Cluster();
+					cluster.setClusterId(clusterCount++);
+					clusters.add(cluster);
+					expandCluster(point, neighborPts, cluster, noise, dbSamples);
+				}
 			}
 		}
-		if(clusters.size()>5 && clusters.size()<12)
-			System.out.print("# Clusters: "+ clusters.size()+" ");
+		System.out.print("# Total Clusters: "+ clusters.size()+" -> ");
+		for(Cluster c : clusters){
+			System.out.print("id: "+c.getClusterId()+" size:"+c.getCluster().size()+" ");
+		}System.out.println();
 		for(int i=0; i<samples.size(); i++){
 			DBScanSample dbSample = dbSamples.get(i);
 			Sample sample = samples.get(i);
@@ -81,7 +85,7 @@ public class DBScanClustering implements Clustering{
 		}
 	}
 
-	public void expandCluster(DBScanSample point, ArrayList<DBScanSample> neighbors, Cluster cluster, ArrayList<DBScanSample> samples){
+	public void expandCluster(DBScanSample point, ArrayList<DBScanSample> neighbors, Cluster cluster, Cluster noise, ArrayList<DBScanSample> samples){
 		cluster.add(point);
 		point.setCalculatedClusterId(cluster.getClusterId());
 		for(int i=0; i<neighbors.size(); i++){
@@ -92,10 +96,20 @@ public class DBScanClustering implements Clustering{
 				if(nextNeighbors.size()>=this.minPoints){
 					neighbors.addAll(nextNeighbors);
 				}
-			}
-			if(pt.getCalculatedClusterId()==0){
-				cluster.add(pt);
-				pt.setCalculatedClusterId(cluster.getClusterId());
+				if(pt.getCalculatedClusterId()==0){
+					cluster.add(pt);
+					pt.setCalculatedClusterId(cluster.getClusterId());
+				}
+			}else {
+				if(pt.getCalculatedClusterId()==-1){
+					ArrayList<DBScanSample> nextNeighbors = regionQuery(pt, samples);
+					if(nextNeighbors.size()>=this.minPoints){
+						neighbors.addAll(nextNeighbors);
+					}
+					cluster.add(pt);
+					noise.getCluster().remove(pt);
+					pt.setCalculatedClusterId(cluster.getClusterId());
+				}
 			}
 		}
 	}
@@ -103,10 +117,8 @@ public class DBScanClustering implements Clustering{
 	public ArrayList<DBScanSample> regionQuery(DBScanSample point, ArrayList<DBScanSample> samples){
 		ArrayList<DBScanSample> neighborhood = new ArrayList<DBScanSample>();
 		for(DBScanSample sample : samples){
-			if(point!=sample){
-				if(point.getEuclideanDistance(sample) < this.epsilon){
-					neighborhood.add(sample);
-				}
+			if(point.getEuclideanDistance(sample) < this.epsilon){
+				neighborhood.add(sample);
 			}
 		}
 		return neighborhood;
@@ -128,6 +140,5 @@ public class DBScanClustering implements Clustering{
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		// testing commit and push
 	}
 }
