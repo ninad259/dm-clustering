@@ -25,9 +25,10 @@ public class InternalIndex {
 		if(samples!=null && length>0){
 			result = new double[length][length];
 			for(int i=0; i<length; i++){
-				for(int j=0; j<length; j++){
+				for(int j=i; j<length; j++){
 					if(samples.get(i).getCalculatedClusterId() ==  samples.get(j).getCalculatedClusterId()){
 						result[i][j]=1;
+						result[j][i]=1;
 					}else{
 						result[i][j]=0;
 					}
@@ -43,8 +44,9 @@ public class InternalIndex {
 		if(samples!=null && length>0){
 			result = new double[length][length];
 			for(int i=0; i<length; i++){
-				for(int j=0; j<length; j++){
+				for(int j=i; j<length; j++){
 					result[i][j] = samples.get(i).getEuclideanDistance(samples.get(j));
+					result[j][i] = result[i][j];
 				}
 			}
 		}
