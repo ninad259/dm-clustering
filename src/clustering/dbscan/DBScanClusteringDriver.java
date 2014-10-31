@@ -1,5 +1,8 @@
 package clustering.dbscan;
 
+import indexing.external.ExternalIndex;
+import indexing.internal.InternalIndex;
+
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -35,11 +38,11 @@ public class DBScanClusteringDriver {
 				samples.add(new Sample(Integer.parseInt(tokens[0]), Integer.parseInt(tokens[1]),features));
 			}
 			scanner.close();
-			for(int i=2524; i<2580; i++){
-				for(int j=5; j<7; j++){
-					double epsilon = i*0.0001;
-//			double epsilon = 0.257;
-					int minPoints = j;
+//			for(int i=1; i<100; i++){
+//				for(int j=4; j<6; j++){
+//					double epsilon = 0.11+i*0.001;
+			double epsilon = 0.257;
+					int minPoints = 5;
 					ArrayList<Sample> newSamples = new ArrayList<Sample>();
 					newSamples.addAll(samples);
 					normalizeData(newSamples);
@@ -47,8 +50,12 @@ public class DBScanClusteringDriver {
 					clusterTech.clustering(newSamples);
 					
 					evaluateClusteringTech(epsilon, minPoints, newSamples);
-				}
-			}
+					InternalIndex intInd = new InternalIndex();
+					System.out.println("Correlation: "+intInd.getCorrelation(newSamples));
+					ExternalIndex extInd = new ExternalIndex();
+					System.out.println("Jaccard: "+extInd.getJaccardCoeff(newSamples));
+//				}
+//			}
 		} catch (FileNotFoundException e) {
 			System.err.println(e.toString());;
 		}
@@ -58,25 +65,20 @@ public class DBScanClusteringDriver {
 		int count = 0;
 		for(Sample s : samples){
 			if(s.getCalculatedClusterId() == s.getGroundTruthClusterId()){
-//				System.out.println(s.getCalculatedClusterId()+ " -> "+ s.getGroundTruthClusterId());
 				count++;
 			}
 		}
 		double accuracy = ((double)count/(double)samples.size());
 		
 //		if(accuracy*10000>5.0){
-			if(accuracy > bestAccuracy){
+//			if(accuracy > bestAccuracy){
 				bestAccuracy = accuracy;
 				bestEpsilon = epsilon;
 				bestMinPoints = minPoints;
-				System.out.println();
-				System.out.print("Better values for----->");
 				System.out.print("Epsilon: "+bestEpsilon+" minPoints: "+bestMinPoints+" ");
 				System.out.println("Accuracy: "+bestAccuracy*100);
 				System.out.println();
-			}
-//			System.out.print("Epsilon: "+epsilon+" minPoints: "+minPoints+" ");
-//			System.out.println("Accuracy: "+accuracy*100);
+//			}
 //		}
 	}
 	
