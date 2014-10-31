@@ -6,6 +6,11 @@ import clustering.driver.Clustering;
 import dataobjects.Sample;
 
 public class HierarchicalClustering implements Clustering{
+
+	//to maintain the snapshot at each level
+	ArrayList<ArrayList<Cluster>> snapshot = new ArrayList<ArrayList<Cluster>>(); 
+
+
 	private class Cluster{
 		private ArrayList<Sample> samples;
 		public Cluster(ArrayList<Sample> samples){
@@ -18,39 +23,41 @@ public class HierarchicalClustering implements Clustering{
 			this.samples = samples;
 		}
 	}
+	
 	@Override
 	public void clustering(ArrayList<Sample> samples) {
+		//CHANGE THIS HARDCODING
+		int noOfClusters = 10;
+		
 		ArrayList<Cluster> clusterArray = new ArrayList<Cluster>();
 		for(int i = 0; i<samples.size(); i++){
 			ArrayList<Sample> sampleArray = new ArrayList<Sample>();
+			//initially each is its own cluster
+			samples.get(i).setCalculatedClusterId(i);
 			sampleArray.add(samples.get(i));
 			clusterArray.add(new Cluster(sampleArray));
 		}
 
-		//float[][]distanceMatrix = computeDistanceMatrix(samples);
-		/*for(int i = 0; i<distanceMatrix.length; i++){
-			for(int j = 0; j<distanceMatrix.length; j++){
-				System.out.print(distanceMatrix[i][j]+ " ");
-			}
-			System.out.println();
-		}*/
-
-
-
-
-		//to maintain the snapshot at each level
-		ArrayList<ArrayList<Cluster>> snapshot = new ArrayList<ArrayList<Cluster>>(); 
+		//initial snapshot
+		snapshot.add(new ArrayList<Cluster>(clusterArray));
 		
 		//perform size-1 agglomerations
-		for(int i = 0; i<samples.size()-1; i++){
-			snapshot.add(clusterArray);
+		for(int i = 0; i<samples.size()-1-noOfClusters+1; i++){
 			agglomerationUsingMin(clusterArray);
-			System.out.println("hi");
+			snapshot.add(new ArrayList<Cluster>(clusterArray));
 		}
-
-
+		/*for(Cluster c : snapshot.get(snapshot.size()-1)){
+			for(Sample s: c.getSamples()){
+				System.out.println(s.getCalculatedClusterId());
+			}
+		}*/
+		
+		for(Sample s : samples){
+			//System.out.println(s.getCalculatedClusterId());
+		}
+		//System.out.println("hi");
 	}
-	
+
 	public static void agglomerationUsingMin(ArrayList<Cluster> clusterArray){
 		int sample1index = 0;
 		int sample2index = 0;
@@ -72,11 +79,16 @@ public class HierarchicalClustering implements Clustering{
 		ArrayList<Sample> agglomeratedSamples = new ArrayList<Sample>();
 		agglomeratedSamples.addAll(clusterArray.get(sample1index).getSamples());
 		agglomeratedSamples.addAll(clusterArray.get(sample2index).getSamples());
+		//change calculatedClusterId to new Id
+		for(Sample s : agglomeratedSamples){
+			s.setCalculatedClusterId(sample1index);
+		}
 		clusterArray.get(sample1index).setSamples(agglomeratedSamples);
 		clusterArray.remove(sample2index);
+		//System.out.println(sample2index + " was removed");
 	}
-	
-	
+
+
 	//this method is now redundant
 	public double[][] computeDistanceMatrix(ArrayList<Sample> samples){
 		int sampleSize = samples.size();
