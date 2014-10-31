@@ -74,9 +74,9 @@ public class DBScanClustering implements Clustering{
 				}
 			}
 		}
-		System.out.print("# Total Clusters: "+ clusters.size()+" -> ");
+		System.out.print("# Total Clusters: "+ (clusters.size()-1)+" -> ");
 		for(Cluster c : clusters){
-			System.out.print("id: "+c.getClusterId()+" size:"+c.getCluster().size()+" ");
+			System.out.print("<id: "+c.getClusterId()+" size: "+c.getCluster().size()+"> ");
 		}System.out.println();
 		for(int i=0; i<samples.size(); i++){
 			DBScanSample dbSample = dbSamples.get(i);
