@@ -7,10 +7,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-import clustering.dbscan.DBScanClustering;
-import clustering.dbscan.DBScanClusteringDriver;
-import clustering.hierarchical.HierarchicalClustering;
 import utils.FileUtils;
+import clustering.dbscan.DBScanClusteringDriver;
 import dataobjects.Sample;
 
 
@@ -41,10 +39,8 @@ public class HierarchicalClusteringDriver {
 			HierarchicalClustering HC = new HierarchicalClustering();
 			DBScanClusteringDriver.normalizeData(samples);
 			HC.clustering(samples);
-			InternalIndex intInd = new InternalIndex();
-			System.out.println("Correlation: "+intInd.getCorrelation(samples));
-			ExternalIndex extInd = new ExternalIndex();
-			System.out.println("Jaccard: "+extInd.getJaccardCoeff(samples));
+			System.out.println("Correlation: "+InternalIndex.getCorrelation(samples));
+			System.out.println("Jaccard: "+ExternalIndex.getJaccardCoeff(samples));
 			
 		} catch (FileNotFoundException e) {
 			System.err.println(e.toString());;

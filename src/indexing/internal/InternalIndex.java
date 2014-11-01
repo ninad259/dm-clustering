@@ -6,11 +6,7 @@ import dataobjects.Sample;
 
 public class InternalIndex {
 
-	public InternalIndex() {
-		// TODO Auto-generated constructor stub
-	}
-
-	public double getCorrelation(ArrayList<Sample> samples){
+	public static double getCorrelation(ArrayList<Sample> samples){
 		double result = 0;
 		double[][] incidenceMatrix = (double[][]) getIncidenceMatrix(samples);
 		double[][] distanceMatrix = getDistanceMatrix(samples);
@@ -19,7 +15,7 @@ public class InternalIndex {
 		return result;
 	}
 
-	public double[][] getIncidenceMatrix(ArrayList<Sample> samples){
+	public static double[][] getIncidenceMatrix(ArrayList<Sample> samples){
 		double[][] result = null;
 		int length = samples.size();
 		if(samples!=null && length>0){
@@ -38,7 +34,7 @@ public class InternalIndex {
 		return result;
 	}
 
-	public double[][] getDistanceMatrix(ArrayList<Sample> samples){
+	public static double[][] getDistanceMatrix(ArrayList<Sample> samples){
 		double[][] result = null;
 		int length = samples.size();
 		if(samples!=null && length>0){
@@ -63,7 +59,7 @@ public class InternalIndex {
 		return (double)(sum/(matrix.length*matrix.length));
 	}
 	
-	public double getMeanOfMatrix(double[][] matrix){
+	public static double getMeanOfMatrix(double[][] matrix){
 		double sum = 0;
 		for(int i=0; i<matrix.length; i++){
 			for(int j=0; j<matrix.length; j++){
@@ -73,7 +69,7 @@ public class InternalIndex {
 		return (double)(sum/(matrix.length*matrix.length));
 	}
 	
-	public double squaredStandardDeviation(double[][] m1, double[][] m2){
+	public static double squaredStandardDeviation(double[][] m1, double[][] m2){
 		double meanM1 = getMeanOfMatrix(m1);
 		double meanM2 = getMeanOfMatrix(m2);
 		int length = m1.length;

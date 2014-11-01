@@ -50,10 +50,8 @@ public class DBScanClusteringDriver {
 					clusterTech.clustering(newSamples);
 					
 					evaluateClusteringTech(epsilon, minPoints, newSamples);
-					InternalIndex intInd = new InternalIndex();
-					System.out.println("Correlation: "+intInd.getCorrelation(newSamples));
-					ExternalIndex extInd = new ExternalIndex();
-					System.out.println("Jaccard: "+extInd.getJaccardCoeff(newSamples));
+					System.out.println("Correlation: "+InternalIndex.getCorrelation(samples));
+					System.out.println("Jaccard: "+ExternalIndex.getJaccardCoeff(samples));
 //				}
 //			}
 		} catch (FileNotFoundException e) {

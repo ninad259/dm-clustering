@@ -6,11 +6,7 @@ import dataobjects.Sample;
 
 public class ExternalIndex {
 
-	public ExternalIndex() {
-		
-	}
-
-	public double getJaccardCoeff(ArrayList<Sample> samples){
+	public static double getJaccardCoeff(ArrayList<Sample> samples){
 		double result = 0;
 		double[][] m1 = getIncidenceMatrixForGroundTruth(samples);
 		double[][] m2 = getIncidenceMatrixForCalculatedLabel(samples);
@@ -32,7 +28,7 @@ public class ExternalIndex {
 		return result;
 	}
 	
-	public double[][] getIncidenceMatrixForGroundTruth(ArrayList<Sample> samples){
+	public static double[][] getIncidenceMatrixForGroundTruth(ArrayList<Sample> samples){
 		double[][] result = new double[samples.size()][samples.size()];
 		for(int i=0; i<samples.size(); i++){
 			for(int j=i; j<samples.size(); j++){
@@ -48,7 +44,7 @@ public class ExternalIndex {
 		return result;
 	}
 	
-	public double[][] getIncidenceMatrixForCalculatedLabel(ArrayList<Sample> samples){
+	public static double[][] getIncidenceMatrixForCalculatedLabel(ArrayList<Sample> samples){
 		double[][] result = new double[samples.size()][samples.size()];
 		for(int i=0; i<samples.size(); i++){
 			for(int j=i; j<samples.size(); j++){
