@@ -2,7 +2,10 @@ package clustering.hierarchical;
 import indexing.external.ExternalIndex;
 import indexing.internal.InternalIndex;
 
+import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -41,6 +44,16 @@ public class HierarchicalClusteringDriver {
 			HC.clustering(samples);
 			System.out.println("Correlation: "+InternalIndex.getCorrelation(samples));
 			System.out.println("Jaccard: "+ExternalIndex.getJaccardCoeff(samples));
+			File f = new File("F:\\Windows_Eclipse_Workspace\\DataMiningProj2\\resources\\out.txt");
+			if(!f.exists()){
+				f.createNewFile();
+			}
+			FileWriter fw = new FileWriter(f.getAbsoluteFile());
+			BufferedWriter bw = new BufferedWriter(fw);
+			for(Sample s : samples){
+				bw.write(s.toString());
+			}
+			bw.close();
 			
 		} catch (FileNotFoundException e) {
 			System.err.println(e.toString());;

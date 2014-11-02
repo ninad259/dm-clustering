@@ -1,6 +1,7 @@
 package clustering.hierarchical;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import clustering.driver.Clustering;
 import dataobjects.Sample;
@@ -51,9 +52,15 @@ public class HierarchicalClustering implements Clustering{
 				System.out.println(s.getCalculatedClusterId());
 			}
 		}*/
-		
+		int clusterCount = 0;
+		HashMap<Integer, Integer> map = new HashMap<Integer, Integer>();
 		for(Sample s : samples){
-			//System.out.println(s.getCalculatedClusterId());
+			if(!map.containsKey(s.getCalculatedClusterId())){
+				map.put(s.getCalculatedClusterId(), ++clusterCount);
+			}
+		}
+		for(Sample s : samples){
+			s.setCalculatedClusterId(map.get(s.getCalculatedClusterId()));
 		}
 		//System.out.println("hi");
 	}
