@@ -42,6 +42,16 @@ public class Sample {
 		euclideanDistance = (double) Math.sqrt(euclideanDistance);
 		return euclideanDistance;
 	}
-
+	@Override
+	public String toString(){
+		StringBuffer sb = new StringBuffer();
+		String TAB = "\t";
+		sb.append(new Integer(this.sampleId).toString()+TAB+new Integer(this.calculatedClusterId).toString()+TAB);
+		for(float f : features){
+			sb.append(f+TAB);
+		}
+		sb.append("\n");
+		return sb.toString();
+	}
 	
 }

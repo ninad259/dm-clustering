@@ -20,6 +20,7 @@ public class DBScanClustering implements Clustering{
 
 	private double epsilon;
 	private int minPoints;
+	private ArrayList<Cluster> clusters;
 
 	/**
 	 * @param epsilon
@@ -29,6 +30,7 @@ public class DBScanClustering implements Clustering{
 		super();
 		this.epsilon = epsilon;
 		this.minPoints = minPoints;
+		this.clusters = new ArrayList<Cluster>();
 	}
 
 	public double getEpsilon() {
@@ -46,6 +48,14 @@ public class DBScanClustering implements Clustering{
 	public void setMinPoints(int minPoints) {
 		this.minPoints = minPoints;
 	}
+	
+	public ArrayList<Cluster> getClusters() {
+		return clusters;
+	}
+
+	public void setClusters(ArrayList<Cluster> clusters) {
+		this.clusters = clusters;
+	}
 
 	@Override
 	public void clustering(ArrayList<Sample> samples) {
@@ -53,7 +63,7 @@ public class DBScanClustering implements Clustering{
 		for(Sample point : samples){
 			dbSamples.add(new DBScanSample(point));
 		}
-		ArrayList<Cluster> clusters = new ArrayList<Cluster>();
+//		ArrayList<Cluster> clusters = new ArrayList<Cluster>();
 		Cluster noise = new Cluster();
 		noise.setClusterId(-1);
 		clusters.add(noise);
@@ -74,10 +84,6 @@ public class DBScanClustering implements Clustering{
 				}
 			}
 		}
-		System.out.print("# Total Clusters: "+ (clusters.size()-1)+" -> ");
-		for(Cluster c : clusters){
-			System.out.print("<id: "+c.getClusterId()+" size: "+c.getCluster().size()+"> ");
-		}System.out.println();
 		for(int i=0; i<samples.size(); i++){
 			DBScanSample dbSample = dbSamples.get(i);
 			Sample sample = samples.get(i);
