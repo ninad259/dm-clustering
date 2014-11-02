@@ -27,7 +27,7 @@ public class HierarchicalClustering implements Clustering{
 	@Override
 	public void clustering(ArrayList<Sample> samples) {
 		//CHANGE THIS HARDCODING
-		int noOfClusters = 10;
+		int noOfClusters = 5;
 		
 		ArrayList<Cluster> clusterArray = new ArrayList<Cluster>();
 		for(int i = 0; i<samples.size(); i++){
@@ -37,7 +37,7 @@ public class HierarchicalClustering implements Clustering{
 			sampleArray.add(samples.get(i));
 			clusterArray.add(new Cluster(sampleArray));
 		}
-
+		
 		//initial snapshot
 		snapshot.add(new ArrayList<Cluster>(clusterArray));
 		
@@ -78,6 +78,18 @@ public class HierarchicalClustering implements Clustering{
 		//merge the two min indices into one index
 		ArrayList<Sample> agglomeratedSamples = new ArrayList<Sample>();
 		agglomeratedSamples.addAll(clusterArray.get(sample1index).getSamples());
+		
+		
+		//printing dendrogram-ish output
+		System.out.print("Merging cluster ");
+		for(Sample s : clusterArray.get(sample1index).getSamples()){
+			System.out.print(s.getSampleId() + " ");
+		}
+		System.out.print(" with ");
+		for(Sample s : clusterArray.get(sample2index).getSamples()){
+			System.out.print(s.getSampleId() + " ");
+		}
+		System.out.println();
 		agglomeratedSamples.addAll(clusterArray.get(sample2index).getSamples());
 		//change calculatedClusterId to new Id
 		for(Sample s : agglomeratedSamples){

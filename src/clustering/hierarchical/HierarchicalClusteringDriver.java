@@ -19,7 +19,7 @@ public class HierarchicalClusteringDriver {
 		
 		try {
 			ArrayList<Sample> samples = new ArrayList<Sample>();
-			Scanner scanner = file.readFileUsingScanner("/iyer.txt");
+			Scanner scanner = file.readFileUsingScanner("/cho.txt");
 			while(scanner.hasNextLine()){
 				String line = scanner.nextLine();
 				String[] tokens = line.split("\\s");
