@@ -56,15 +56,15 @@ public class DBScanClusteringDriver {
 					clusterTech.clustering(newSamples);
 
 					ArrayList<Cluster> clusters = clusterTech.getClusters();
-					System.out.print("# Total Clusters: "+ (clusters.size()-1)+" -> ");
+					System.out.println("# Total number of clusters: "+ (clusters.size()-1)+" ");
+					System.out.println("<id ,\t size>");
 					for(Cluster c : clusters){
-						System.out.print("<"+c.getClusterId()+","+c.getCluster().size()+"> ");
+						System.out.println("<"+c.getClusterId()+" , \t"+c.getCluster().size()+">");
 					}
-					System.out.println();
 					double correlation = InternalIndex.getCorrelation(newSamples);
 					double jaccard = ExternalIndex.getJaccardCoeff(newSamples);
 //					evaluateClusteringTech(epsilon, minPoints, correlation, jaccard, currentClusters);
-					System.out.println("eps: "+epsilon+" minPts: "+minPoints+" "+" correlation: "+correlation+" Jaccard: "+jaccard);
+					System.out.println("Epsilon: "+epsilon+" Min Pts: "+minPoints+"\n"+"Correlation: "+correlation+" Jaccard: "+jaccard);
 					File f = new File(prop.getProperty("resources.folder")+"/"+prop.getProperty("outputfile.name"));
 					if(!f.exists()){
 						f.createNewFile();
