@@ -23,8 +23,10 @@ public class InternalIndex {
 			for(int i=0; i<length; i++){
 				for(int j=i; j<length; j++){
 					if(samples.get(i).getCalculatedClusterId() ==  samples.get(j).getCalculatedClusterId()){
-						result[i][j]=1;
-						result[j][i]=1;
+						if(samples.get(i).getCalculatedClusterId()!=-1 && samples.get(j).getCalculatedClusterId()!=-1){
+							result[i][j]=1;
+							result[j][i]=1;	
+						}
 					}else{
 						result[i][j]=0;
 					}
@@ -48,7 +50,7 @@ public class InternalIndex {
 		}
 		return result;
 	}
-	
+
 	public double getMeanOfMatrix(int[][] matrix){
 		double sum = 0;
 		for(int i=0; i<matrix.length; i++){
@@ -58,7 +60,7 @@ public class InternalIndex {
 		}
 		return (double)(sum/(matrix.length*matrix.length));
 	}
-	
+
 	public static double getMeanOfMatrix(double[][] matrix){
 		double sum = 0;
 		for(int i=0; i<matrix.length; i++){
@@ -68,7 +70,7 @@ public class InternalIndex {
 		}
 		return (double)(sum/(matrix.length*matrix.length));
 	}
-	
+
 	public static double squaredStandardDeviation(double[][] m1, double[][] m2){
 		double meanM1 = getMeanOfMatrix(m1);
 		double meanM2 = getMeanOfMatrix(m2);

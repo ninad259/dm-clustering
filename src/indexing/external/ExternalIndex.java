@@ -27,7 +27,7 @@ public class ExternalIndex {
 		result = ss / (ss+sd+ds);
 		return result;
 	}
-	
+
 	public static double[][] getIncidenceMatrixForGroundTruth(ArrayList<Sample> samples){
 		double[][] result = new double[samples.size()][samples.size()];
 		for(int i=0; i<samples.size(); i++){
@@ -43,14 +43,14 @@ public class ExternalIndex {
 		}
 		return result;
 	}
-	
+
 	public static double[][] getIncidenceMatrixForCalculatedLabel(ArrayList<Sample> samples){
 		double[][] result = new double[samples.size()][samples.size()];
 		for(int i=0; i<samples.size(); i++){
 			for(int j=i; j<samples.size(); j++){
 				if(samples.get(i).getCalculatedClusterId() == samples.get(j).getCalculatedClusterId()){
-					result[i][j]=1;
-					result[j][i]=1;
+						result[i][j]=1;
+						result[j][i]=1;	
 				}
 				else{
 					result[i][j]=0;
