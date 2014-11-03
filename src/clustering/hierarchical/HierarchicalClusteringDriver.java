@@ -43,7 +43,10 @@ public class HierarchicalClusteringDriver {
 			scanner.close();
 
 			HierarchicalClustering HC = new HierarchicalClustering();
-			DBScanClusteringDriver.normalizeData(samples);
+			if(prop.getProperty("normalized").equals("true")){
+				DBScanClusteringDriver.normalizeData(samples);	
+			}
+			
 			HC.clustering(samples);
 			System.out.println("Correlation: "+InternalIndex.getCorrelation(samples));
 			System.out.println("Jaccard: "+ExternalIndex.getJaccardCoeff(samples));

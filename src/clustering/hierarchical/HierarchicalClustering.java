@@ -2,7 +2,6 @@ package clustering.hierarchical;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Properties;
 
 import utils.ConfigUtils;
 import clustering.driver.Clustering;
