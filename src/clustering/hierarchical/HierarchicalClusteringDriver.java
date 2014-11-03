@@ -31,6 +31,7 @@ public class HierarchicalClusteringDriver {
 				String[] tokens = line.split("\\s");
 				
 				//number of tokens created should be 3 or above
+				
 				if(tokens.length<=2){
 					throw new IOException("Invalid Input File");
 				}

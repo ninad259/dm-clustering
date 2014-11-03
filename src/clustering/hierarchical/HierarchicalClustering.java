@@ -11,7 +11,7 @@ public class HierarchicalClustering implements Clustering{
 
 	//to maintain the snapshot at each level
 	ArrayList<ArrayList<Cluster>> snapshot = new ArrayList<ArrayList<Cluster>>(); 
-
+	static int iCount = 0;
 
 	private class Cluster{
 		private ArrayList<Sample> samples;
@@ -29,7 +29,7 @@ public class HierarchicalClustering implements Clustering{
 	@Override
 	public void clustering(ArrayList<Sample> samples) {
 		int noOfClusters = Integer.parseInt(ConfigUtils.getProperties().getProperty("cluster.count"));
-
+		int noOfIterations = Integer.parseInt(ConfigUtils.getProperties().getProperty("iteration.count")); 
 		ArrayList<Cluster> clusterArray = new ArrayList<Cluster>();
 		for(int i = 0; i<samples.size(); i++){
 			ArrayList<Sample> sampleArray = new ArrayList<Sample>();
@@ -43,7 +43,7 @@ public class HierarchicalClustering implements Clustering{
 		snapshot.add(new ArrayList<Cluster>(clusterArray));
 
 		//perform size-1 agglomerations
-		for(int i = 0; i<samples.size()-1-noOfClusters+1; i++){
+		for(int i = 0; (i<samples.size()-1-noOfClusters+1)&&(i<noOfIterations); i++){
 			agglomerationUsingMin(clusterArray);
 			snapshot.add(new ArrayList<Cluster>(clusterArray));
 		}
@@ -61,6 +61,14 @@ public class HierarchicalClustering implements Clustering{
 		}
 		for(Sample s : samples){
 			s.setCalculatedClusterId(map.get(s.getCalculatedClusterId()));
+		}
+		int counter = 1;
+		for(Cluster c: snapshot.get(snapshot.size()-1)){
+			System.out.print(counter++ + " -");
+			for(Sample s: c.getSamples()){
+				System.out.print(" " + s.getSampleId());
+			}
+			System.out.println();
 		}
 	}
 
@@ -85,9 +93,9 @@ public class HierarchicalClustering implements Clustering{
 		ArrayList<Sample> agglomeratedSamples = new ArrayList<Sample>();
 		agglomeratedSamples.addAll(clusterArray.get(sample1index).getSamples());
 
-
+		
 		//printing dendrogram-ish output
-		System.out.print("Merging cluster ");
+		/*System.out.print(iCount++ +" Merging cluster ");
 		for(Sample s : clusterArray.get(sample1index).getSamples()){
 			System.out.print(s.getSampleId() + " ");
 		}
@@ -95,7 +103,8 @@ public class HierarchicalClustering implements Clustering{
 		for(Sample s : clusterArray.get(sample2index).getSamples()){
 			System.out.print(s.getSampleId() + " ");
 		}
-		System.out.println();
+		System.out.println();*/
+		
 		agglomeratedSamples.addAll(clusterArray.get(sample2index).getSamples());
 
 		//change calculatedClusterId to new Id
