@@ -8,8 +8,10 @@ import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Properties;
 import java.util.Scanner;
 
+import utils.ConfigUtils;
 import utils.FileUtils;
 import clustering.dbscan.DBScanClusteringDriver;
 import dataobjects.Sample;
@@ -19,10 +21,11 @@ public class HierarchicalClusteringDriver {
 
 	public static void main(String[] args) throws IOException {
 		FileUtils file = new FileUtils();
-		
+		Properties prop = ConfigUtils.getProperties();
 		try {
 			ArrayList<Sample> samples = new ArrayList<Sample>();
-			Scanner scanner = file.readFileUsingScanner("/cho.txt");
+			//Scanner scanner = file.readFileUsingScanner("/cho.txt");
+			Scanner scanner = file.readFileUsingScanner("/"+prop.getProperty("file.name"));
 			while(scanner.hasNextLine()){
 				String line = scanner.nextLine();
 				String[] tokens = line.split("\\s");
@@ -44,7 +47,7 @@ public class HierarchicalClusteringDriver {
 			HC.clustering(samples);
 			System.out.println("Correlation: "+InternalIndex.getCorrelation(samples));
 			System.out.println("Jaccard: "+ExternalIndex.getJaccardCoeff(samples));
-			File f = new File("F:\\Windows_Eclipse_Workspace\\DataMiningProj2\\resources\\out.txt");
+			File f = new File(prop.getProperty("resources.folder")+"/"+prop.getProperty("outputfile.name"));
 			if(!f.exists()){
 				f.createNewFile();
 			}

@@ -20,7 +20,7 @@ public class FileUtils {
 	public FileUtils(){
 		if(resourceFolder==null){
 			Properties prop = ConfigUtils.getProperties();
-			resourceFolder = prop.getProperty("resource.folder");
+			resourceFolder = prop.getProperty("resources.folder");
 		}
 	}
 	
