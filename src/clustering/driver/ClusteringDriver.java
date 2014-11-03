@@ -1,11 +1,12 @@
 package clustering.driver;
-import java.io.FileNotFoundException;
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-import clustering.hierarchical.HierarchicalClustering;
 import utils.FileUtils;
+import clustering.kMeans.KMeansClustering;
 import dataobjects.Sample;
 
 
@@ -13,10 +14,16 @@ public class ClusteringDriver {
 
 	public static void main(String[] args) throws IOException {
 		FileUtils file = new FileUtils();
+		int numberOfClusters;
+		int iterations;
+		int counter;
+		String[] centroidIDString;
+		int[] centroidID;
+		
 		
 		try {
 			ArrayList<Sample> samples = new ArrayList<Sample>();
-			Scanner scanner = file.readFileUsingScanner("/iyer.txt");
+			Scanner scanner = file.readFileUsingScanner("/cho.txt");
 			while(scanner.hasNextLine()){
 				String line = scanner.nextLine();
 				String[] tokens = line.split("\\s");
@@ -33,11 +40,31 @@ public class ClusteringDriver {
 			}
 			scanner.close();
 
-			HierarchicalClustering HC = new HierarchicalClustering();
-			HC.clustering(samples);
+			
+			BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+			
+			//Get no. of clusters
+			System.out.println("Enter the number of clusters");
+			numberOfClusters = Integer.parseInt(br.readLine());
+			
+			//Get centroid ID
+			System.out.println("Enter the centroid ID");
+			centroidIDString = br.readLine().split("\\s");
+			centroidID = new int[numberOfClusters];			
+			for(counter = 0;counter<centroidIDString.length;counter++){
+				centroidID[counter] = Integer.parseInt(centroidIDString[counter]);
+			}
+			
+			//Get iterations
+			System.out.println("Enter the number of iterations");
+			iterations = Integer.parseInt(br.readLine());
+			
+			//Call Kmeans 
+			KMeansClustering KC = new KMeansClustering();
+			KC.clustering(samples,numberOfClusters,centroidID,iterations,0,false);
 			
 			
-		} catch (FileNotFoundException e) {
+		} catch (Exception e) {
 			System.err.println(e.toString());;
 		}
 		
