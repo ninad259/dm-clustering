@@ -1,10 +1,11 @@
 package clustering.kMeans;
+import indexing.external.ExternalIndex;
+import indexing.internal.InternalIndex;
+
 import java.util.ArrayList;
 
-import clustering.driver.Clustering;
-import dataobjects.Sample;
 import dataobjects.KMeansCluster;
-import indexing.external.*;
+import dataobjects.Sample;
 
 public class KMeansClustering {
 	
@@ -18,6 +19,8 @@ public class KMeansClustering {
 	KMeansCluster[] clusters;
 	boolean recalculateCentroid = false;
 	double jaccardCoefficient=0;
+	double correlation =0;
+	int numberOfIterations=1;
 	
 	
 	public float calculateEucledianDistance(Sample s ,float[] centroid){
@@ -45,11 +48,13 @@ public class KMeansClustering {
 			}
 		}
 		
-		//Set the clusterId in Sample
+		//Add the sample in the respective cluster
+		clusters[clusterID -1].getSampleID().add(sampleCounter);
+		
+		//Set recalculateCentroid
 		if(s.getCalculatedClusterId()!= clusterID){
 		   recalculateCentroid = true;
-		   s.setCalculatedClusterId(clusterID);
-		   clusters[clusterID -1].getSampleID().add(sampleCounter);
+		   s.setCalculatedClusterId(clusterID);		   
 		}
 		
 		
@@ -80,7 +85,7 @@ public class KMeansClustering {
 		//Initialize centroids for 1st pass					
 		for(featureCounter=0;featureCounter<lengthOfFeatureVector;featureCounter++){														
 		   for(clusterCounter=0;clusterCounter<numberOfClusters;clusterCounter++){
-		      clusters[clusterCounter].getCentroid()[featureCounter] = samples.get(centroidID[clusterCounter]).getFeatures()[featureCounter];								
+		      clusters[clusterCounter].getCentroid()[featureCounter] = samples.get(centroidID[clusterCounter]-1).getFeatures()[featureCounter];								
 		   }
 		}			
 														
@@ -90,7 +95,7 @@ public class KMeansClustering {
 		}
 		
 		
-		while(recalculateCentroid){			
+		while(recalculateCentroid  && numberOfIterations<iterations){			
 		   recalculateCentroid=false;
 			
 		   //Recalculate centroids
@@ -107,6 +112,14 @@ public class KMeansClustering {
 				 centroidValue = centroidValue/numberOfSamplesInCluster;
 				 clusters[clusterCounter].getCentroid()[featureCounter] = centroidValue;												
 			  }			
+		   }
+		   
+		   //Increment iterations
+		   numberOfIterations++;
+		   
+		   //Remove the assigned samples to cluster
+		   for(clusterCounter=0;clusterCounter<numberOfClusters;clusterCounter++){
+			   clusters[clusterCounter].getSampleID().clear(); 
 		   }
 		
 		   //Assign each sample a cluster ID
@@ -127,6 +140,12 @@ public class KMeansClustering {
 		//Calculate Jaccard Coefficient
 		jaccardCoefficient = ExternalIndex.getJaccardCoeff(samples);
 		System.out.println("Jaccard Coefficient=" + jaccardCoefficient);
+		
+		correlation = InternalIndex.getCorrelation(samples);
+		System.out.println("Correlation=" + correlation);
+		System.out.println("number of iterations=" + numberOfIterations);
+		System.out.println(clusters[0].getSampleID().size());
+		
 		
 	}			
 }
