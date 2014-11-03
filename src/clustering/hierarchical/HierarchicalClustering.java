@@ -2,7 +2,9 @@ package clustering.hierarchical;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Properties;
 
+import utils.ConfigUtils;
 import clustering.driver.Clustering;
 import dataobjects.Sample;
 
@@ -24,12 +26,11 @@ public class HierarchicalClustering implements Clustering{
 			this.samples = samples;
 		}
 	}
-	
+
 	@Override
 	public void clustering(ArrayList<Sample> samples) {
-		//CHANGE THIS HARDCODING
-		int noOfClusters = 5;
-		
+		int noOfClusters = Integer.parseInt(ConfigUtils.getProperties().getProperty("cluster.count"));
+
 		ArrayList<Cluster> clusterArray = new ArrayList<Cluster>();
 		for(int i = 0; i<samples.size(); i++){
 			ArrayList<Sample> sampleArray = new ArrayList<Sample>();
@@ -38,10 +39,10 @@ public class HierarchicalClustering implements Clustering{
 			sampleArray.add(samples.get(i));
 			clusterArray.add(new Cluster(sampleArray));
 		}
-		
+
 		//initial snapshot
 		snapshot.add(new ArrayList<Cluster>(clusterArray));
-		
+
 		//perform size-1 agglomerations
 		for(int i = 0; i<samples.size()-1-noOfClusters+1; i++){
 			agglomerationUsingMin(clusterArray);
@@ -62,7 +63,6 @@ public class HierarchicalClustering implements Clustering{
 		for(Sample s : samples){
 			s.setCalculatedClusterId(map.get(s.getCalculatedClusterId()));
 		}
-		//System.out.println("hi");
 	}
 
 	public static void agglomerationUsingMin(ArrayList<Cluster> clusterArray){
@@ -85,8 +85,8 @@ public class HierarchicalClustering implements Clustering{
 		//merge the two min indices into one index
 		ArrayList<Sample> agglomeratedSamples = new ArrayList<Sample>();
 		agglomeratedSamples.addAll(clusterArray.get(sample1index).getSamples());
-		
-		
+
+
 		//printing dendrogram-ish output
 		System.out.print("Merging cluster ");
 		for(Sample s : clusterArray.get(sample1index).getSamples()){
@@ -98,17 +98,18 @@ public class HierarchicalClustering implements Clustering{
 		}
 		System.out.println();
 		agglomeratedSamples.addAll(clusterArray.get(sample2index).getSamples());
+
 		//change calculatedClusterId to new Id
 		for(Sample s : agglomeratedSamples){
 			s.setCalculatedClusterId(sample1index);
 		}
 		clusterArray.get(sample1index).setSamples(agglomeratedSamples);
 		clusterArray.remove(sample2index);
-		//System.out.println(sample2index + " was removed");
+
 	}
 
 
-	//this method is now redundant
+	//this method is now redundant, delete/make it usable
 	public double[][] computeDistanceMatrix(ArrayList<Sample> samples){
 		int sampleSize = samples.size();
 		double[][] distanceMatrix = new double[sampleSize][sampleSize];
