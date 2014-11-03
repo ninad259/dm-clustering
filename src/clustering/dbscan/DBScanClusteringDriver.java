@@ -43,8 +43,8 @@ public class DBScanClusteringDriver {
 			}
 			scanner.close();
 //			for(int i=1; i<=100; i++){
-//				for(int j=2; j<5; j++){
-//					double epsilon = 0.027+i*0.001;
+//				for(int j=3; j<4; j++){
+//					double epsilon = 0.060+i*0.001;
 //					int minPoints = j;
 					double epsilon = getEpsilon();
 					int minPoints = getMinPoints();
@@ -57,10 +57,9 @@ public class DBScanClusteringDriver {
 
 					ArrayList<Cluster> clusters = clusterTech.getClusters();
 					System.out.println("# Total number of clusters: "+ (clusters.size()-1)+" ");
-					System.out.println("<id ,\t size>");
 					for(Cluster c : clusters){
-						System.out.println("<"+c.getClusterId()+" , \t"+c.getCluster().size()+">");
-					}
+						System.out.print("<"+c.getClusterId()+", "+c.getCluster().size()+"> ");
+					}System.out.println();
 					double correlation = InternalIndex.getCorrelation(newSamples);
 					double jaccard = ExternalIndex.getJaccardCoeff(newSamples);
 //					evaluateClusteringTech(epsilon, minPoints, correlation, jaccard, currentClusters);
