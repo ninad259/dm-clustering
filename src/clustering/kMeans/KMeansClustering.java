@@ -135,7 +135,7 @@ public class KMeansClustering {
 			}
 		}
 		
-		System.out.println("Total error=" + totalError + "Error percent=" + (totalError*1.0)/(samples.size()));
+		//System.out.println("Total error=" + totalError + "Error percent=" + (totalError*1.0)/(samples.size()));
 		
 		//Calculate Jaccard Coefficient
 		jaccardCoefficient = ExternalIndex.getJaccardCoeff(samples);
@@ -144,7 +144,7 @@ public class KMeansClustering {
 		correlation = InternalIndex.getCorrelation(samples);
 		System.out.println("Correlation=" + correlation);
 		System.out.println("number of iterations=" + numberOfIterations);
-		System.out.println(clusters[0].getSampleID().size());
+		//System.out.println(clusters[0].getSampleID().size());
 		
 		
 	}			
