@@ -23,12 +23,10 @@ public class DBScanClusteringDriver {
 	private static Properties prop ;
 	
 	public static void main(String[] args) throws IOException {
-		FileUtils file = new FileUtils();
-
 		prop = ConfigUtils.getProperties();
 		try {
 			ArrayList<Sample> samples = new ArrayList<Sample>();
-			Scanner scanner = file.readFileUsingScanner("/iyer.txt");
+			Scanner scanner = getScannerForFile();
 			while(scanner.hasNextLine()){
 				String line = scanner.nextLine();
 				String[] tokens = line.split("\\s");
@@ -44,12 +42,12 @@ public class DBScanClusteringDriver {
 				samples.add(new Sample(Integer.parseInt(tokens[0]), Integer.parseInt(tokens[1]),features));
 			}
 			scanner.close();
-			for(int i=1; i<=100; i++){
-				for(int j=4; j<6; j++){
-					double epsilon = 0.035+i*0.001;
-					int minPoints = j;
-//					double epsilon = getEpsilon();
-//					int minPoints = getMinPoints();
+//			for(int i=1; i<=100; i++){
+//				for(int j=2; j<5; j++){
+//					double epsilon = 0.027+i*0.001;
+//					int minPoints = j;
+					double epsilon = getEpsilon();
+					int minPoints = getMinPoints();
 					ArrayList<Sample> newSamples = new ArrayList<Sample>();
 					newSamples.addAll(samples);
 					if(isNormalized())
@@ -67,7 +65,7 @@ public class DBScanClusteringDriver {
 					double jaccard = ExternalIndex.getJaccardCoeff(newSamples);
 //					evaluateClusteringTech(epsilon, minPoints, correlation, jaccard, currentClusters);
 					System.out.println("eps: "+epsilon+" minPts: "+minPoints+" "+" correlation: "+correlation+" Jaccard: "+jaccard);
-					File f = new File("F:\\Windows_Eclipse_Workspace\\DataMiningProj2\\resources\\out.txt");
+					File f = new File(prop.getProperty("resources.folder")+"/"+prop.getProperty("outputfile.name"));
 					if(!f.exists()){
 						f.createNewFile();
 					}
@@ -77,8 +75,8 @@ public class DBScanClusteringDriver {
 						bw.write(s.toString());
 					}
 					bw.close();
-				}
-			}
+//				}
+//			}
 		} catch (FileNotFoundException e) {
 			System.err.println(e.toString());;
 		}
