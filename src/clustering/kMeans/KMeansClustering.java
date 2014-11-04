@@ -21,6 +21,8 @@ public class KMeansClustering {
 	double jaccardCoefficient=0;
 	double correlation =0;
 	int numberOfIterations=1;
+	float eucledianDistance;
+	float minimumEucledianDistance;
 	
 	
 	public float calculateEucledianDistance(Sample s ,float[] centroid){
@@ -65,7 +67,7 @@ public class KMeansClustering {
 		int sampleNumber=0;
 		float centroidValue=0;
 		int numberOfSamplesInCluster=0;
-		int totalError=0;
+//		int totalError=0;
 				
 		//Step 2:Initialize Variables
 		lengthOfFeatureVector = samples.get(0).getFeatures().length;
@@ -127,13 +129,43 @@ public class KMeansClustering {
 		      assignCluster(samples.get(sampleCounter),sampleCounter);
 		   }								
 	    }
+		/*
+		for(clusterCounter=0;clusterCounter<numberOfClusters;clusterCounter++){
+			System.out.println("clusterCounter:" + clusterCounter + " Size:" + clusters[clusterCounter].getSampleID().size());
+		}
 		
+		//Find the sample closest to each centroid
+		
+		//Refresh the clusters
+		for(clusterCounter=0;clusterCounter<numberOfClusters;clusterCounter++){
+			   clusters[clusterCounter].getSampleID().clear(); 
+		}
+		
+		//
+		for(clusterCounter=0;clusterCounter<numberOfClusters;clusterCounter++){	
+			minimumEucledianDistance = Float.MAX_VALUE;
+			for(sampleCounter=0;sampleCounter<samples.size();sampleCounter++){
+				eucledianDistance = calculateEucledianDistance(samples.get(sampleCounter),clusters[clusterCounter].getCentroid());
+				if(minimumEucledianDistance > eucledianDistance){
+					minimumEucledianDistance = eucledianDistance;
+					clusters[clusterCounter].getSampleID().clear();
+					clusters[clusterCounter].getSampleID().add(sampleCounter);					
+				}				
+			}
+		}
+		
+		//Print the sample in each cluster
+		for(clusterCounter=0;clusterCounter<numberOfClusters;clusterCounter++){
+			System.out.println("cluster counter sample ID :" + clusters[clusterCounter].getSampleID());
+//			System.out.println("Final Centroid =" + Arrays.toString(clusters[clusterCounter].getCentroid()));
+		}
+		*/
 		//Calculate error
-		for(Sample s : samples){
+/*		for(Sample s : samples){
 			if(s.getCalculatedClusterId()!=s.getGroundTruthClusterId()){
 				totalError++;
 			}
-		}
+		}*/
 		
 		//System.out.println("Total error=" + totalError + "Error percent=" + (totalError*1.0)/(samples.size()));
 		
